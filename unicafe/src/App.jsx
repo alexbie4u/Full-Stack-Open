@@ -6,6 +6,7 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  
   // console.log(good)
   // console.log(neutral)
   // console.log(bad)
@@ -13,25 +14,21 @@ const App = () => {
   return (
     <div>
       <GiveFeedback />
-      <button onClick={() => setGood(good + 1)}>
-      Good
-      </button>
-      <button onClick={() => setNeutral(neutral + 1)}>
-      Neutral
-      </button>
-      <button onClick={() => setBad(bad + 1)}>
-      Bad
-      </button>
-      
-
+      <FeedbackButton buttonType={good} setButtonType={setGood} text="Good" />
+      <FeedbackButton buttonType={neutral} setButtonType={setNeutral} text="Neutral" />
+      <FeedbackButton buttonType={bad} setButtonType={setBad} text="Bad" />
       <Statistics good={good} neutral={neutral} bad={bad}/>
 
     </div>
   )
 }
 
-const feedbackButton = () => {
-  
+const FeedbackButton = ({buttonType, setButtonType, text}) => {
+  return (
+    <button onClick={() => setButtonType(buttonType + 1)}>
+    {text}
+    </button>
+  )
 }
 
 const GiveFeedback = () => {
@@ -66,12 +63,40 @@ const Statistics = ({good, neutral, bad}) => {
         <h1>
           Statistics:
         </h1>
-        <StatisticLine text="Good:" value={good}/>
+        {/* <StatisticLine text="Good:" value={good}/>
         <StatisticLine text="Neutral:" value={neutral}/>
         <StatisticLine text="Bad:" value={bad}/>
         <StatisticLine text="Total Feedback:" value={totalFeedback}/>
         <StatisticLine text="Average:" value={(good-bad)/totalFeedback}/>
-        <StatisticLine text="Positive %:" value={good/totalFeedback * 100}/>
+        <StatisticLine text="Positive %:" value={good/totalFeedback * 100}/> */}
+      <table>
+        <tr>
+          <td>Good</td>
+          <td>{good}</td>
+        </tr>
+        <tr>
+          <td>Neutral</td>
+          <td>{neutral}</td>
+        </tr>
+        <tr>
+          <td>Bad</td>
+          <td>{bad}</td>
+        </tr>
+        <tr>
+          <td>Total Feedback</td>
+          <td>{totalFeedback}</td>
+        </tr>
+        <tr>
+          <td>Average</td>
+          <td>{(good-bad)/totalFeedback}</td>
+        </tr>
+        <tr>
+          <td>Positive %</td>
+          <td>{good/totalFeedback * 100}</td>
+        </tr>
+      </table>
+        
+
       </div>
     )
   }
