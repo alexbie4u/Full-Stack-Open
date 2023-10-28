@@ -18,7 +18,6 @@ const App = () => {
       <FeedbackButton buttonType={neutral} setButtonType={setNeutral} text="Neutral" />
       <FeedbackButton buttonType={bad} setButtonType={setBad} text="Bad" />
       <Statistics good={good} neutral={neutral} bad={bad}/>
-
     </div>
   )
 }
