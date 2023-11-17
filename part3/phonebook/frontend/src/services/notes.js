@@ -1,5 +1,7 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/persons'
+const baseUrl = 'api/persons'
+
+
 
 const getAll = () => {
   return axios
@@ -13,17 +15,19 @@ const create = newObject => {
     .then(response => response.data)
 }
 
-const update = (id, newObject) => {
+const update = (_id, newObject) => {
   return axios
-  .put(`${baseUrl}/${id}`, newObject)
+  .put(`${baseUrl}/${_id}`, newObject)
   .then(response => response.data)
 }
 
-const deletePerson = (id) => {
+const deletePerson = (_id) => {
   return axios
-  .delete(`${baseUrl}/${id}`)
+  .delete(`${baseUrl}/${_id}`)
   .then(response => response.data)
   
 }
 
 export default { getAll, create, update, deletePerson }
+
+// somehow retrieve the right ID to send the right HTTP request.

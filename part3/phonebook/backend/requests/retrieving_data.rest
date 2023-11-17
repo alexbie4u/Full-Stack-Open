@@ -1,0 +1,24 @@
+GET http://localhost:3000/api/persons
+
+###
+POST http://localhost:3000/api/persons/
+Content-Type: application/json
+
+{
+    "name": "Alex",
+    "number": 42373767
+}
+
+
+###
+DELETE http://localhost:3000/api/persons/65546191b75531a89ca17623
+
+###
+
+PUT http://localhost:3000/api/persons/6551c79ec522a150fe7cc5eb
+Content-Type: application/json
+
+{
+    "name": "Alexander Bie",
+    "number": 42373767
+}
