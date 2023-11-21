@@ -1,12 +1,12 @@
 require('dotenv').config()
 const { ObjectId } = require('mongoose').Types;
-const fs = require('fs');
 const express = require('express')
 const router = express.Router()
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const { default: mongoose } = require('mongoose');
 const Person = require('../models/phonebook')
+const middleware = require('../utils/middleware')
 
 router.use(express.static('dist'))
 router.use(bodyParser.json())
@@ -103,27 +103,9 @@ router
 //     fs.writeFileSync('./persons.json', JSON.stringify(array, null, 2));
 // };
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
 
-router.use(unknownEndpoint)
-
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
-  } else if (error.number === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
-  }
-
-  next(error)
-}
-
-router.use(errorHandler)
+router.use(middleware.unknownEndpoint)
+router.use(middleware.errorHandler)
 
 
 module.exports = router
