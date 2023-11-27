@@ -1,0 +1,30 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "alex",
+    "name": "Alexander",
+    "password": "thisismypassword"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsZXhiNHUiLCJpZCI6IjY1NjQ0NGY4MmQ5ZDJkNDlhZDY2ZDI1NCIsImlhdCI6MTcwMTA4MDU4M30.yjcwxgWzeHjF7Jz_A13E0iUxYlphQeE9nuhshiSEpn8
+
+{
+    "title": "The requests",
+    "author": "Alex",
+    "url": "wwwmindyourbusiness",
+    "likes": 400,
+    "userId": "656444f82d9d2d49ad66d254"
+}
+
+###
+GET http://localhost:3003/api/blogs/656456c422c2af95e35ebca5
+
+
+
+###
+DELETE http://localhost:3003/api/blogs/6564683a01679b5adf666b8c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsZXhiNHUiLCJpZCI6IjY1NjQ0NGY4MmQ5ZDJkNDlhZDY2ZDI1NCIsImlhdCI6MTcwMTA3ODA5OX0.lyM5FgCmrcWdD7VEJRIWFRif6tjgM80OBSmoySUXKAo
