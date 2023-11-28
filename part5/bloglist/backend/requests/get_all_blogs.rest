@@ -1,0 +1,19 @@
+GET http://localhost:3003/api/blogs
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "String",
+    "author": "String",
+    "url": "String",
+    "likes": 42000
+}
+
+###
+DELETE http://localhost:3003/api/blogs/5a422b891b54a676234d17fa
+
+### 
+PUT http://localhost:3003/api/blogs/5a422aa71b54a676234d17f8
