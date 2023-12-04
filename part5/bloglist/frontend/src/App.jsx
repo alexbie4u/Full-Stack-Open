@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import loginService from './services/login'
-import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 import Footer from './components/Footer'
 import Notification from './components/Notification'
@@ -17,9 +17,13 @@ const App = () => {
 
   const newBlogFormRef = useRef()
 
+  const sortingByLikes = (a, b) => (b.likes - a.likes)
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+    blogService
+    .getAll()
+    .then(blogs =>
+      setBlogs( blogs.sort(sortingByLikes) )
     )  
   }, [])
 
@@ -43,15 +47,11 @@ const App = () => {
     newBlogFormRef.current.toggleVisibility()
   }
 
-  const handleBlogChange = (event) => {
-    setNewBlog(event.target.value)
-  }
-
-  const newBlogForm = () => (
-    <Togglable buttonLabel="Create new blog" ref={newBlogFormRef}>
-        <NewBlogForm createNewBlog={addBlog} />
-      </Togglable>
-  )
+  // const newBlogForm = () => (
+  //   <Togglable buttonLabel="Create new blog" ref={newBlogFormRef}>
+  //       <NewBlogForm createNewBlog={addBlog} />
+  //     </Togglable>
+  // )
 
   const handleLogin = async (username, password) => {
     try {
@@ -68,6 +68,42 @@ const App = () => {
     }
   }
 
+  const updateBlog = async (blogObject) => {
+    const blogToUpdate = {
+      title: blogObject.title,
+      author: blogObject.author,
+      url: blogObject.url,
+      likes: blogObject.likes
+    }
+  
+    if (blogObject.user != null) blogToUpdate.user = blogObject.user.id
+    console.log(blogToUpdate)
+    try {
+      const returnedBlog = await blogService.update(blogObject.id, blogToUpdate)
+      
+      setBlogs(blogs.map(blog => blog.id === blogObject.id ? blogObject : blog))
+      console.log(`Updated: "${returnedBlog.title} (by ${returnedBlog.author})`)
+    } catch (error) {
+      Notification(`Unable to update Blog. Error: ${error.response.data.error}`, 'error')
+    }
+  }
+
+  const deleteBlog = async (event) => {
+    try {
+      const id = event.target.id
+      console.log('User ID: ' + id);
+
+      if (window.confirm(`Delete '${event.target.name}'?`)) {
+        const response = await blogService.del(id)
+        Notification('Blog has beed deleted', 'notification')
+        console.log(response)
+
+        setBlogs(blogs.filter(blog => blog.id !== id))
+      }
+    } catch (error) {
+      Notification(`Unable to delete Blog. Error: ${error.response.data.error}`, 'error')
+    }
+  }
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -98,12 +134,12 @@ const App = () => {
 
       
       <h2>Submit your blog</h2>
-      {newBlogForm(addBlog)}
+      <Togglable buttonLabel="Create new blog" ref={newBlogFormRef}>
+        <NewBlogForm createNewBlog={addBlog} />
+      </Togglable>
 
-      <h2>Blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user.username}/>
+      
     </div>
   )
 }

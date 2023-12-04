@@ -55,7 +55,7 @@ blogsRouter
       await Blog.findByIdAndDelete(req.params.id)  
       res.status(204).end()
     } else {
-      response.status(403).json({ error: 'Not Authorized: only creator can delete the blog' })
+      res.status(403).json({ error: 'Not Authorized: only creator can delete the blog' })
     }
   })
 
