@@ -16,6 +16,8 @@ const create = async newObject => {
     const config = {
       headers: { Authorization: token },
     }
+
+    console.log("CREATE request headers:", config.headers);
   
     const response = await axios.post(baseUrl, newObject, config)
     return response.data
@@ -30,6 +32,8 @@ const del = async (id) => {
   const config = {
     headers: { Authorization: token }
   }
+  console.log("DELETE request headers:", config.headers);
+
   const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response
 }

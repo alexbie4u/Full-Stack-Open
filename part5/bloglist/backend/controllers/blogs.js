@@ -40,24 +40,27 @@ blogsRouter
     const blog = await Blog.findById(req.params.id)
     res.json(blog)
 })
-  .delete('/:id', async (req, res) => {
-    const decodedToken = jwt.verify(req.token, process.env.SECRET)
-    if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
+  .delete('/:id', async (request, response) => {
+      //Find out if token is valid
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    //Search user of the blog
+    const blog = await Blog.findById(request.params.id)
+
+    if(!blog) {
+      response.status(204).end() // If it doesn't exist the result is the same (blog deleted)
+    } else if ( blog.user && blog.user.toString() === decodedToken.id.toString() ) {
+      //If user of the blog exists and is the same as the one in the token
+      await Blog.findByIdAndDelete(request.params.id)
+      response.status(204).end()
+    } else{
+      //Error: not authorized
+      response.status(403).json({ error: 'Not Authorized: only creator can delete the blog' })
     }
 
-    const user = req.user
-    const blog = await Blog.findById(req.params.id)
-    
-    if (!blog) {
-      res.status(204).end()
-    } else if (user && user.toString() === decodedToken.id.toString() ) {
-      await Blog.findByIdAndDelete(req.params.id)  
-      res.status(204).end()
-    } else {
-      res.status(403).json({ error: 'Not Authorized: only creator can delete the blog' })
-    }
-  })
+})
 
   .put('/:id', async (req, res) => {
     const body = req.body
