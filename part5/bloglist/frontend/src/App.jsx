@@ -64,7 +64,10 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch (error) {
-      Notification(`Error: ${error.response.data.error}`, 'error')
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -134,7 +137,7 @@ const App = () => {
 
       
       <h2>Submit your blog</h2>
-      <Togglable buttonLabel="Create new blog" ref={newBlogFormRef}>
+      <Togglable buttonLabel="Create new blog" buttonId="createNewBlogButton1" ref={newBlogFormRef}>
         <NewBlogForm createNewBlog={addBlog} />
       </Togglable>
 
