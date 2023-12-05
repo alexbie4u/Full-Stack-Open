@@ -36,14 +36,13 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('alexb4u')
-      cy.get('#password').type('thisismypassword')
-      cy.get('#login-button').click()
+      cy.login({ username: 'alexb4u', password: 'thisismypassword' })
 
       cy.createBlog({
         title: 'The Perks of Being a Wallflower',
         author: 'Emma Watson',
         url: 'www.blank.org',
+        likes: 12
     })
     })
 
@@ -57,20 +56,77 @@ describe('Blog app', function() {
 
     it('A user can like a blog entry', function() {
       cy.get('#show-details-btn').click()
-      cy.contains('Like count: 0')
+      cy.contains('Like count: 12')
       cy.get('.likeButton').click()
-      cy.contains('Like count: 1')
+      cy.contains('Like count: 13')
     })
 
-    // it('A user can delete their own blog entries', function() {
-    //   cy.
-    // })
+    it('A user can delete their own blog entries', function() {
+      cy.get('#show-details-btn').click()
+      cy.get('.deleteBtn').click()
+    })
   })
 
+  describe('and there are several blogs', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Blog with no likes',
+          author: 'Cypress author',
+          url: 'http://cypresstestingblogapp.nice',
+        })
+          .then(() =>
+            cy.createBlog({
+              title: 'Blog with 1 like',
+              author: 'Cypress author',
+              url: 'http://cypresstestingblogapp.nice',
+              likes: 1,
+            })
+          )
+          .then(() =>
+            cy.createBlog({
+              title: 'Blog with 10 likes',
+              author: 'Cypress author',
+              url: 'http://cypresstestingblogapp.nice',
+              likes: 10,
+            })
+          )
   
+    })  
+  })
+
+  describe('and there are several blogs', function () {
+    beforeEach(function () {
+      cy.login({ username: 'alexb4u', password: 'thisismypassword' })
+
+      cy.createBlog({
+        title: 'Blog with no likes',
+        author: 'Cypress author',
+        url: 'http://cypresstestingblogapp.nice',
+      })
+        .then(() =>
+          cy.createBlog({
+            title: 'Blog with 1 like',
+            author: 'Cypress author',
+            url: 'http://cypresstestingblogapp.nice',
+            likes: 1,
+          })
+        )
+        .then(() =>
+          cy.createBlog({
+            title: 'Blog with 10 likes',
+            author: 'Cypress author',
+            url: 'http://cypresstestingblogapp.nice',
+            likes: 10,
+          })
+        )
+    })
+
+    it.only('Blogs are sorted by the number of likes', function () {
+      cy.get('.blog').then((blogs) => {
+        expect(blogs[0].textContent).to.contains('Blog with 10 likes')
+        expect(blogs[1].textContent).to.contains('Blog with 1 like')
+        expect(blogs[2].textContent).to.contains('Blog with no likes')
+      })
+    })
+  })
 })
-
-
-
-
-    
