@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types';
-import { vote } from '../reducers/anecdoteReducer';
+import { updateAnecdote } from '../reducers/anecdoteReducer';
 import setNotification from '../utils/notificationUtils';
 
 
@@ -33,8 +33,8 @@ const Anecdotes = () => {
           key={anecdote.id}
           anecdote={anecdote}
           handleClick={() => {
-            dispatch(vote({ id: anecdote.id }))
-            setNotification(`You upvoted "${anecdote.content}". It now has ${anecdote.votes + 1} votes`, 5)(dispatch)
+            dispatch(updateAnecdote(anecdote))
+            dispatch(setNotification(`You upvoted "${anecdote.content}". It now has ${anecdote.votes + 1} votes`, 5))
           }}
         />
       )}
