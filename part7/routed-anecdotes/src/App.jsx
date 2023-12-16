@@ -5,6 +5,7 @@ import {
 import { useState } from 'react'
 import PropTypes from 'prop-types';
 import { useField } from './hooks';
+import { Table } from 'react-bootstrap'
 
 export const Menu = ({ anecdotes, addNew, createNotification }) => {
   const padding = {
@@ -37,12 +38,18 @@ export const Menu = ({ anecdotes, addNew, createNotification }) => {
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => 
-      <li key={anecdote.id} >
-        <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-      </li>)}
-    </ul>
+    <Table striped>
+      <tbody>
+        {anecdotes.map(anecdote => 
+        <tr key={anecdote.id} >
+          <td>
+            <Link to={`/anecdotes/${anecdote.id}`}>
+              {anecdote.content}
+            </Link>
+          </td>
+        </tr>)}
+      </tbody>
+    </Table>
   </div>
 )
 
@@ -175,7 +182,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Software anecdotes</h1>
       <Notification notification={notification}/>
       <Menu anecdotes={anecdotes} addNew={addNew} createNotification={createNotification}/>
