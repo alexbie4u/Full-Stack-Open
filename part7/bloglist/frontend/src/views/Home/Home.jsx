@@ -74,11 +74,11 @@ const Home = () => {
             <BlogList blogs={blogs}/>
     
             <div className="user-info">
-        <p>{user.name} logged in</p>
-        <Button variant="primary" type="submit" onClick={() => handleLogout(notificationDispatch, userDispatch)}>
-          Logout
-        </Button>
-       </div>
+              <p>{user.name} logged in</p>
+              <Button variant="primary" type="submit" onClick={() => handleLogout(notificationDispatch, userDispatch)}>
+                Logout
+              </Button>
+            </div>
     
         </div>  
     )
