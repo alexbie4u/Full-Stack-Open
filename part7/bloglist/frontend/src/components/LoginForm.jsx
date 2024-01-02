@@ -1,22 +1,32 @@
 import React, { useState } from 'react'
-// import PropTypes from 'prop-types'
 import { Button } from 'react-bootstrap'
-import { handleLogin } from '../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { useNotificationDispatch } from '../reducers/NotificationContext'
+import { handleLogin, useUserDispatch } from '../reducers/UserContext'
 
 const LoginForm = () => {
-  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const notificationDispatch = useNotificationDispatch()
+  const userDispatch = useUserDispatch()
 
-  const login = (e) => {
-    e.preventDefault();
-    dispatch(handleLogin({
-      username: username,
-      password: password}));
-    setUsername('');
-    setPassword('');
+  const login = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+  
+    try {
+      await handleLogin({
+        username: username,
+        password: password,
+        notificationDispatch,
+        userDispatch,
+      });
+  
+      setUsername('');
+      setPassword('');
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
+  
 
   return (
     <div>
