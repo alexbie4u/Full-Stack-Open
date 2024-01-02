@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
+    "@tanstack/react-query": "^5.14.1",
     "react-bootstrap": "^2.9.1",
     "react-redux": "^9.0.4",
+    "react-router-dom": "^6.21.0",
     "redux": "^5.0.0"
   }
 }

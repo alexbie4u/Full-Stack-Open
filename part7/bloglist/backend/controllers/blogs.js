@@ -13,6 +13,7 @@ blogsRouter
   .post('/', async (req, res) => {
   const body = req.body
 
+
   const decodedToken = jwt.verify(req.token, process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
@@ -25,7 +26,7 @@ blogsRouter
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: user.id
+    user: user.id,
   })
 
   const savedBlog = await blog.save()
@@ -33,6 +34,28 @@ blogsRouter
   await user.save()
 
   res.status(201).json(savedBlog)
+  })
+
+  .post('/:id/comments', async (request, response) => {
+  // verify(request, response)
+
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    const comment = request.body.comment
+    const newBlog = {
+      "title": blog.title,
+      "author": blog.author,
+      "url": blog.url,
+      "likes": blog.likes,
+      "comments": blog.comments.concat(comment)
+    }
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id, newBlog, { new: true }
+    )
+    response.json(updatedBlog.toJSON())
+  }
+
+  response.status(404).end()
 })
 
 blogsRouter
